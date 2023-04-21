@@ -1,13 +1,11 @@
-# Create your views here.
 from django.shortcuts import get_object_or_404
-
-from posts.models import Group, Post
 
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 
 from .permissions import IsAuthorOrReadOnly
 from .serializers import CommentSerializer, GroupSerializer, PostSerializer
+from posts.models import Group, Post
 
 
 class CommentViewSet(ModelViewSet):
@@ -19,8 +17,7 @@ class CommentViewSet(ModelViewSet):
 
     def get_queryset(self):
         post = get_object_or_404(Post, pk=self.kwargs.get('post_id'))
-        new_queryset = post.comments
-        return new_queryset
+        return post.comments
 
     def perform_create(self, serializer):
         post = get_object_or_404(Post, pk=self.kwargs.get('post_id'))
